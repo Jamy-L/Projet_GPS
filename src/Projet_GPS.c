@@ -57,7 +57,7 @@ void UART0_IRQHandler() {
   temp = LPC_USART0->RXDAT;
   rx_buffer[rx_char_counter] = temp;        // Append the current character to the rx_buffer
 
-  if ((temp=='*')&&(etat_lecture==marche)) indice_etoile=temp;
+  if ((temp=='*')&&(etat_lecture==marche)) indice_etoile=rx_char_counter;
   if (temp=='$') etat_lecture=marche;
 
   if ((rx_char_counter==indice_etoile+2)&&(etat_lecture==marche)) {   // Fin de chaine.
@@ -86,7 +86,7 @@ void copier_nettoyer(unsigned char* chaine_origine,unsigned char* chaine_sortie)
 	// copier une version nettoyée de la chaine d'origine dans la chaine de sortie
 	unsigned char *ptr_origine=chaine_origine;
 	unsigned char *ptr_sortie=chaine_sortie;
-	while (*ptr_origine != '$')ptr_origine++; //on se débarasse des premiers char. Par construction, on est sur de trouver une dollard
+	while (*ptr_origine != '$')ptr_origine++; //on se débarasse des premiers char. Par construction, on est sur de trouver une dollar
 
 	*ptr_sortie='$';
 	ptr_origine++;ptr_sortie++;
