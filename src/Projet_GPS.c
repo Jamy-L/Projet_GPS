@@ -34,10 +34,9 @@ unsigned char chaine_direction_latitude[2];
 unsigned char texte_ecran[30];
 
 
-
 enum {arret, marche} etat_lecture;
 volatile enum {false, true} handshake;
-enum {echec,succes} succes_lecture;
+enum {echec_heure, echec_position,succes} succes_lecture;
 
 
 //
@@ -113,7 +112,7 @@ void ordonner_chaine(unsigned char* chaine_origine, unsigned char* chaine_heure,
 	while (chaine_origine[i] != ',')i++;;
 	i++;
 	if (chaine_origine[i]==','){ //un champ est vide : lecture impossible
-		succes_lecture = echec;
+		succes_lecture = echec_heure;
 	}
 
 	else{
@@ -130,7 +129,7 @@ void ordonner_chaine(unsigned char* chaine_origine, unsigned char* chaine_heure,
 		while (chaine_origine[i] != ',')i++; //on ignore les 100èmes de seconde
 		i++;
 		if (chaine_origine[i]==','){ //pas de signal
-			succes_lecture = echec;
+			succes_lecture = echec_position;
 		}
 		else {
 			chaine_latitude[0]=chaine_origine[i++];
@@ -245,12 +244,26 @@ int main(void) {
     if ((*(chaine_nettoyee+3)=='G')&&(*(chaine_nettoyee+4)=='G')&&(*(chaine_nettoyee+5)=='A')){ //trame GNGGA
     	lcd_gohome();
     	ordonner_chaine(chaine_nettoyee, chaine_heure, chaine_minute, chaine_seconde, chaine_latitude, chaine_longitude, chaine_direction_latitude, chaine_direction_longitude);
-    	if (succes_lecture == echec){
-    		lcd_puts("pas de signal    ");
+    	if (succes_lecture == echec_position){
+    		sprintf(texte_ecran,"%s:%s%:%s",
+    		    	chaine_heure,chaine_minute, chaine_seconde);
+    		lcd_puts(texte_ecran);
+    		lcd_position(1,0);
+    		lcd_puts("pas de position");
     	}
+    	else if (succes_lecture == echec_heure){
+    		lcd_puts("pas d'heure");
+    		lcd_position(1,0);
+    		lcd_puts("pas de position");
+
+    	}
+
     	else {
-    		sprintf(texte_ecran,"%s:%s%:%s\n%s%s %s%s",
-    				chaine_heure,chaine_minute, chaine_seconde,
+    		sprintf(texte_ecran,"%s:%s%:%s",
+    				chaine_heure,chaine_minute, chaine_seconde);
+    		lcd_puts(texte_ecran);
+    		lcd_position(1,0);
+    		sprintf(texte_ecran, "%s%s %s%s",
 					chaine_latitude,chaine_direction_latitude,
 					chaine_longitude,chaine_direction_longitude);
     		lcd_puts(texte_ecran);
