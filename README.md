@@ -9,19 +9,21 @@ Le module m'a été fourni sans aucune référence, datasheet, ou quelconque inf
 ### Récepteur
 Le rôle du récepteur est simplement de recevoir les informations brutes envoyées par plusieurs satellites, et de les transmettre au microcontrôleur
 
-![Recepteur](./Images/Recepteur.JPG)
+![Recepteur](https://user-images.githubusercontent.com/46826148/148693371-52d713a7-7c34-477e-836f-40021d1814d5.jpg)
 
 ### Microcontrôleur
 Le microcontrôleur doit recevoir les données fournies par le récepteur, et les traduire en une chaîne de caractères suivant la norme NMEA. En particulier, il doit calculer sa position ainsi que l'heure locale à partir des données reçues. De plus, il doit pouvoir gérer une liaison série.
 
-![Microcontroleur](./Images/Microcontroleur.JPG)
+![Microcontroleur](https://user-images.githubusercontent.com/46826148/148693378-79e73187-94e5-43fb-a915-be60871ada0a.jpg)
 
-![Microcontroleur_2](./Images/Microcontroleur_2.JPG)
+![Microcontroleur_2](https://user-images.githubusercontent.com/46826148/148693382-976f3a70-0be9-4a0a-9d29-5d8dc4db96d1.jpg)
+
 
 ### Connecteur
 Le connecteur est un connecteur classique de liaison série, et comporte 4 broches : TX, RX, GND et VCC. Le module doit en effet être alimenté. Il faut donc impérativement s'assurer que le module est bien branché, sans quoi on peut facilement le griller ! 
 
-![Connecteur](./Images/Connecteur.JPG)
+![Connecteur](https://user-images.githubusercontent.com/46826148/148693387-f7c7c611-72e0-4e2e-9533-212770d686ed.jpg)
+
 
 ### Format des trames
 J'ai étudié à l'oscilloscope l'allure des trames reçues afin de pouvoir déchiffrer les données envoyées par le module. Les résultats sont les suivants :
@@ -121,8 +123,12 @@ L'affichage de la position et de l'heure se fera donc en conséquent.
 ## Conclusion
 De manière surprenante, le module ne fournit que l'heure, mais pas la position. En regardant l'allure des trames dans la mémoire, j'ai constaté que le module ne transmet en effet jamais la position (et on notera aussi que l'heure est donnée au format d'été). Une grosse partie du projet a consisté à errer sur le plateau du Moulon au mois de décembre avec le LPC 804 à la main à la recherche d'une trame contenant une position. J'ai tout de même vérifié le fonctionnement du code en simulant une trame, en écrivant manuellement une fausse position dans la mémoire.
 
-![Trame](./Images/Trame.PNG)
-![LCD](./Images/LCD.JPG)
+<img width="136" alt="Trame" src="https://user-images.githubusercontent.com/46826148/148693414-28d78402-de2d-4d75-98b6-db7733a5c908.png">
+
+
+![LCD](https://user-images.githubusercontent.com/46826148/148693412-4e6e372d-d01c-45b8-ad22-c02e8b82676d.jpg)
+
+
 ***
 
 
